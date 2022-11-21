@@ -1,8 +1,8 @@
 {
-  "name": "typescript-action",
-  "version": "0.0.0",
+  "name": "flux-brand-and-version",
+  "version": "1.0.0",
   "private": true,
-  "description": "TypeScript template action",
+  "description": "Calculates version and branch information for building the Flux",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
@@ -11,19 +11,18 @@
     "lint": "eslint src/**/*.ts",
     "package": "ncc build --source-map --license licenses.txt",
     "test": "jest",
-    "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
+    "all": "npm run build && npm run format && npm run lint && npm run package && npm test -- --passWithNoTests"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/flirits/flux-branch-and-version.git"
   },
   "keywords": [
     "actions",
     "node",
     "setup"
   ],
-  "author": "",
-  "license": "MIT",
+  "author": "Teledyne FLIR ITS team",
   "dependencies": {
     "@actions/core": "^1.10.0"
   },
