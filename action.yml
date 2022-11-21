@@ -1,11 +1,21 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Flux branch and version'
+description: 'Calculates version and branch information for building the Flux'
+author: 'Teledyne FLIR ITS team'
 inputs:
-  milliseconds: # change this
+  version:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'version'
+    default: '9.9.9'
+  default-ref:
+    description: default branch/tag
+  flux-server-ref:
+    description: flux-server branch/tag/SHA
+  flux-hybrid-ref:
+    description: flux-hybrid branch/tag/SHA
+  flux-web-ref:
+    description: flux-web branch/tag/SHA
+  flux-streaming-server-ref:
+    description: flux-streaming-server branch/tag/SHA
 runs:
   using: 'node16'
   main: 'dist/index.js'

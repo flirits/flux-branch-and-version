@@ -10,7 +10,7 @@ jobs:
   build: # make sure build/ci work properly
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: |
           npm install
       - run: |
@@ -18,7 +18,12 @@ jobs:
   test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./
         with:
-          milliseconds: 1000
+          version: 4.0.1
+          default-ref: task/reporting/TMSNG-1234
+          flux-server-ref: task/reporting/TMSNG-1235
+          flux-hybrid-ref: task/reporting/TMSNG-1236
+          flux-web-ref: task/reporting/FLUXWEBAPP-123
+          flux-streaming-server-ref: task/reporting/TMSNG-1237
