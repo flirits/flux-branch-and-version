@@ -16,6 +16,19 @@ inputs:
     description: flux-web branch/tag/SHA
   flux-streaming-server-ref:
     description: flux-streaming-server branch/tag/SHA
+outputs:
+  version-string:
+    description: version string
+  default-ref:
+    description: default branch/tag
+  flux-server-ref:
+    description: flux-server branch/tag/SHA
+  flux-hybrid-ref:
+    description: flux-hybrid branch/tag/SHA
+  flux-web-ref:
+    description: flux-web branch/tag/SHA
+  flux-streaming-server-ref:
+    description: flux-streaming-server branch/tag/SHA
 runs:
   using: 'node16'
   main: 'dist/index.js'

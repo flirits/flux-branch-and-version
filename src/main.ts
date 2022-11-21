@@ -1,13 +1,17 @@
 import * as core from '@actions/core'
 
-async function run(): Promise<void> {
+function run(): void {
   try {
     const version = core.getInput('version')
-    const defaultRef = core.getInput('default-ref') ?? process.env.GITHUB_REF_NAME
-    const fluxServerRef = core.getInput('flux-server-ref') ?? defaultRef
-    const fluxHybridRef = core.getInput('flux-hybrid-ref') ?? defaultRef
-    const fluxWebRef = core.getInput('flux-web-ref') ?? defaultRef
-    const fluxStreamingServerRef = core.getInput('flux-streaming-server-ref') ?? defaultRef
+    const defaultRef = core.getInput('default-ref') || process.env.GITHUB_REF_NAME
+    if (!defaultRef) {
+      core.setFailed('Unable to get retrieve the branch name')
+      return
+    }
+    const fluxServerRef = core.getInput('flux-server-ref') || defaultRef
+    const fluxHybridRef = core.getInput('flux-hybrid-ref') || defaultRef
+    const fluxWebRef = core.getInput('flux-web-ref') || defaultRef
+    const fluxStreamingServerRef = core.getInput('flux-streaming-server-ref') || defaultRef
     let versionString
     if (defaultRef === 'master') {
       versionString = `${version}-b${process.env.GITHUB_RUN_NUMBER}`
