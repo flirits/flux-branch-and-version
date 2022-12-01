@@ -13,6 +13,9 @@ function run(): void {
     const fluxWebRef = core.getInput('flux-web-ref') || defaultRef
     const fluxStreamingServerRef = core.getInput('flux-streaming-server-ref') || defaultRef
     const fluxProxyRef = core.getInput('flux-proxy-ref') || defaultRef
+    const buildNativeRef = core.getInput('build-native') || false
+    const releaseRef = core.getInput('release') || false
+    
     let versionString
     if (defaultRef === 'master') {
       versionString = `${version}-b${process.env.GITHUB_RUN_NUMBER}`
@@ -32,7 +35,9 @@ function run(): void {
     core.info(`flux-web-ref: ${fluxWebRef}`)
     core.info(`flux-streaming-server-ref: ${fluxStreamingServerRef}`)
     core.info(`flux-proxy-ref: ${fluxProxyRef}`)
-
+    core.info(`build-native: ${buildNativeRef}`)
+    core.info(`release: ${releaseRef}`)
+    
     core.setOutput('version-string', versionString)
     core.setOutput('default-ref', defaultRef)
     core.setOutput('flux-server-ref', fluxServerRef)
@@ -40,6 +45,8 @@ function run(): void {
     core.setOutput('flux-web-ref', fluxWebRef)
     core.setOutput('flux-streaming-server-ref', fluxStreamingServerRef)
     core.setOutput('flux-proxy-ref', fluxProxyRef)
+    core.setOutput('build-native', buildNativeRef)
+    core.setOutput('release', releaseRef)
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
