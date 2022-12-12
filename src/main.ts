@@ -16,7 +16,7 @@ function run(): void {
     const fluxGatewayRef = core.getInput('flux-gateway-ref') || defaultRef
     const buildNativeRef = core.getInput('build-native') || false
     const releaseRef = core.getInput('release') || false
-    
+
     let versionString
     if (defaultRef === 'master') {
       versionString = `${version}-b${process.env.GITHUB_RUN_NUMBER}`
@@ -39,7 +39,7 @@ function run(): void {
     core.info(`flux-gateway-ref: ${fluxGatewayRef}`)
     core.info(`build-native: ${buildNativeRef}`)
     core.info(`release: ${releaseRef}`)
-    
+
     core.setOutput('version-string', versionString)
     core.setOutput('default-ref', defaultRef)
     core.setOutput('flux-server-ref', fluxServerRef)
