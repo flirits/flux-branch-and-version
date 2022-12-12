@@ -18,6 +18,14 @@ inputs:
     description: flux-streaming-server branch/tag/SHA
   flux-proxy-ref:
     description: flux-proxy branch/tag/SHA
+  flux-documentation-ref:
+    description: flux-documentation branch/tag/SHA
+  flux-gateway-ref:
+    description: flux-gateway branch/tag/SHA
+  build-native:
+    description: build native installers
+  release:
+    description: official release
 outputs:
   version-string:
     description: version string
