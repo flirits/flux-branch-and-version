@@ -39,7 +39,10 @@ function run() {
         const fluxHybridRef = core.getInput('flux-hybrid-ref') || defaultRef;
         const fluxWebRef = core.getInput('flux-web-ref') || defaultRef;
         const fluxStreamingServerRef = core.getInput('flux-streaming-server-ref') || defaultRef;
-        const fluxProxyRef = core.getInput('flux-proxy-ref') || defaultRef;
+        const fluxDocumentationRef = core.getInput('flux-documentation-ref') || defaultRef;
+        const fluxGatewayRef = core.getInput('flux-gateway-ref') || defaultRef;
+        const buildNativeRef = core.getInput('build-native') || false;
+        const releaseRef = core.getInput('release') || false;
         let versionString;
         if (defaultRef === 'master') {
             versionString = `${version}-b${process.env.GITHUB_RUN_NUMBER}`;
@@ -58,14 +61,20 @@ function run() {
         core.info(`flux-hybrid-ref: ${fluxHybridRef}`);
         core.info(`flux-web-ref: ${fluxWebRef}`);
         core.info(`flux-streaming-server-ref: ${fluxStreamingServerRef}`);
-        core.info(`flux-proxy-ref: ${fluxProxyRef}`);
+        core.info(`flux-documentation-ref: ${fluxDocumentationRef}`);
+        core.info(`flux-gateway-ref: ${fluxGatewayRef}`);
+        core.info(`build-native: ${buildNativeRef}`);
+        core.info(`release: ${releaseRef}`);
         core.setOutput('version-string', versionString);
         core.setOutput('default-ref', defaultRef);
         core.setOutput('flux-server-ref', fluxServerRef);
         core.setOutput('flux-hybrid-ref', fluxHybridRef);
         core.setOutput('flux-web-ref', fluxWebRef);
         core.setOutput('flux-streaming-server-ref', fluxStreamingServerRef);
-        core.setOutput('flux-proxy-ref', fluxProxyRef);
+        core.setOutput('flux-documentation-ref', fluxDocumentationRef);
+        core.setOutput('flux-gateway-ref', fluxGatewayRef);
+        core.setOutput('build-native', buildNativeRef);
+        core.setOutput('release', releaseRef);
     }
     catch (error) {
         if (error instanceof Error)
