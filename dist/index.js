@@ -41,6 +41,7 @@ function run() {
         const fluxStreamingServerRef = core.getInput('flux-streaming-server-ref') || defaultRef;
         const fluxDocumentationRef = core.getInput('flux-documentation-ref') || defaultRef;
         const fluxGatewayRef = core.getInput('flux-gateway-ref') || defaultRef;
+        const fluxIsoRef = core.getInput('flux-iso-ref') || defaultRef;
         const buildNativeRef = core.getInput('build-native') || false;
         const releaseRef = core.getInput('release') || false;
         let versionString;
@@ -63,6 +64,7 @@ function run() {
         core.info(`flux-streaming-server-ref: ${fluxStreamingServerRef}`);
         core.info(`flux-documentation-ref: ${fluxDocumentationRef}`);
         core.info(`flux-gateway-ref: ${fluxGatewayRef}`);
+        core.info(`flux-iso-ref: ${fluxIsoRef}`);
         core.info(`build-native: ${buildNativeRef}`);
         core.info(`release: ${releaseRef}`);
         core.setOutput('version-string', versionString);
@@ -73,6 +75,7 @@ function run() {
         core.setOutput('flux-streaming-server-ref', fluxStreamingServerRef);
         core.setOutput('flux-documentation-ref', fluxDocumentationRef);
         core.setOutput('flux-gateway-ref', fluxGatewayRef);
+        core.setOutput('flux-iso-ref', fluxIsoRef);
         core.setOutput('build-native', buildNativeRef);
         core.setOutput('release', releaseRef);
     }
