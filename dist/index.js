@@ -36,6 +36,7 @@ function run() {
             return;
         }
         const fluxServerRef = core.getInput('flux-server-ref') || defaultRef;
+        const fluxPluginsRef = core.getInput('flux-plugins-ref') || defaultRef;
         const fluxHybridRef = core.getInput('flux-hybrid-ref') || defaultRef;
         const fluxWebRef = core.getInput('flux-web-ref') || defaultRef;
         const fluxStreamingServerRef = core.getInput('flux-streaming-server-ref') || defaultRef;
@@ -58,6 +59,7 @@ function run() {
         core.info(`version-string: ${versionString}`);
         core.info(`default-ref: ${defaultRef}`);
         core.info(`flux-server-ref: ${fluxServerRef}`);
+        core.info(`flux-plugins-ref: ${fluxPluginsRef}`);
         core.info(`flux-hybrid-ref: ${fluxHybridRef}`);
         core.info(`flux-web-ref: ${fluxWebRef}`);
         core.info(`flux-streaming-server-ref: ${fluxStreamingServerRef}`);
@@ -68,6 +70,7 @@ function run() {
         core.setOutput('version-string', versionString);
         core.setOutput('default-ref', defaultRef);
         core.setOutput('flux-server-ref', fluxServerRef);
+        core.setOutput('flux-plugins-ref', fluxPluginsRef);
         core.setOutput('flux-hybrid-ref', fluxHybridRef);
         core.setOutput('flux-web-ref', fluxWebRef);
         core.setOutput('flux-streaming-server-ref', fluxStreamingServerRef);
