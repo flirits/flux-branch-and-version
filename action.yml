@@ -10,6 +10,8 @@ inputs:
     description: default branch/tag
   flux-server-ref:
     description: flux-server branch/tag/SHA
+  flux-plugins-ref:
+    description: flux-plugins branch/tag/SHA
   flux-hybrid-ref:
     description: flux-hybrid branch/tag/SHA
   flux-web-ref:
@@ -33,6 +35,8 @@ outputs:
     description: default branch/tag
   flux-server-ref:
     description: flux-server branch/tag/SHA
+  flux-plugins-ref:
+    description: flux-plugins branch/tag/SHA
   flux-hybrid-ref:
     description: flux-hybrid branch/tag/SHA
   flux-web-ref:
