@@ -1,6 +1,6 @@
 {
   "name": "flux-brand-and-version",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "description": "Calculates version and branch information for building the Flux",
   "main": "lib/main.js",
