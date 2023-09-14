@@ -8,20 +8,9 @@ inputs:
     default: '9.9.9'
   default-ref:
     description: default branch/tag
-  flux-server-ref:
-    description: flux-server branch/tag/SHA
-  flux-hybrid-ref:
-    description: flux-hybrid branch/tag/SHA
-  flux-web-ref:
-    description: flux-web branch/tag/SHA
-  flux-streaming-server-ref:
-    description: flux-streaming-server branch/tag/SHA
-  flux-proxy-ref:
-    description: flux-proxy branch/tag/SHA
-  flux-documentation-ref:
-    description: flux-documentation branch/tag/SHA
-  flux-gateway-ref:
-    description: flux-gateway branch/tag/SHA
+  overrides:
+    description: Version overrides branch/tag/SHA
+    default: ''
   build-native:
     description: build native installers
   release:
@@ -39,7 +28,9 @@ outputs:
     description: flux-web branch/tag/SHA
   flux-streaming-server-ref:
     description: flux-streaming-server branch/tag/SHA
-  flux-proxy-ref:
+  flux-gateway-ref:
+    description: flux-proxy-ref branch/tag/SHA
+  flux-maps-ref:
     description: flux-proxy-ref branch/tag/SHA
 runs:
   using: 'node16'
