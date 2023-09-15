@@ -107,7 +107,7 @@ function run() {
         core.setOutput('flux-streaming-server-ref', fluxStreamingServerRef);
         core.setOutput('flux-documentation-ref', fluxDocumentationRef);
         core.setOutput('flux-gateway-ref', fluxGatewayRef);
-        core.setOutput('flux-maps-ref', fluxGatewayRef);
+        core.setOutput('flux-maps-ref', fluxMapsRef);
         core.setOutput('build-native', buildNativeRef);
         core.setOutput('release', releaseRef);
     }

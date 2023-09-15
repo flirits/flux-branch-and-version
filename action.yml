@@ -9,7 +9,7 @@ inputs:
   default-ref:
     description: default branch/tag
   overrides:
-    description: Version overrides branch/tag/SHA
+    description: Version overrides flux=branch/tag/SHA;hybrid=...;web=...;streaming-server=...;gateway=...;maps=...
     default: ''
   build-native:
     description: build native installers
