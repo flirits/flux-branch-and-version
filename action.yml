@@ -29,7 +29,7 @@ outputs:
   flux-streaming-server-ref:
     description: flux-streaming-server branch/tag/SHA
   flux-gateway-ref:
-    description: flux-proxy-ref branch/tag/SHA
+    description: flux-gateway branch/tag/SHA
   flux-maps-ref:
     description: flux-maps branch/tag/SHA
 runs:
