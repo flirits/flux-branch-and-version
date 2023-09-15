@@ -10,6 +10,10 @@ jobs:
   build: # make sure build/ci work properly
     runs-on: ubuntu-latest
     steps:
+      - name: Set Node.js 16.x
+        uses: actions/setup-node@v3.6.0
+        with:
+          node-version: 16.x
       - uses: actions/checkout@v3
       - run: |
           npm install
@@ -23,7 +27,4 @@ jobs:
         with:
           version: 4.0.1
           default-ref: task/reporting/TMSNG-1234
-          flux-server-ref: task/reporting/TMSNG-1235
-          flux-hybrid-ref: task/reporting/TMSNG-1236
-          flux-web-ref: task/reporting/FLUXWEBAPP-123
-          flux-streaming-server-ref: task/reporting/TMSNG-1237
+          overrides: flux=task/reporting/TMSNG-1235;hybrid=task/reporting/TMSNG-1236;web=task/reporting/FLUXWEBAPP-123;streaming=task/reporting/TMSNG-1237

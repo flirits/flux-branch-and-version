@@ -26,7 +26,38 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+/**
+ * Parses the override string
+ * Example of an override string: flux=hashOrTask;hybrid=task/something/some;streaming=...
+ * Available overrides are
+ * - flux
+ * - hybrid
+ * - web
+ * - streaming
+ * - documentation
+ * - gateway
+ * - maps
+ */
 const core = __importStar(__nccwpck_require__(186));
+function parseOverrides(overrides) {
+    const configObject = {
+        flux: "",
+        hybrid: "",
+        web: "",
+        streaming: "",
+        documentation: "",
+        gateway: "",
+        maps: ""
+    };
+    const keyValuePairs = overrides.split(';');
+    for (const pair of keyValuePairs) {
+        const [key, value] = pair.split('=');
+        if (key && value && configObject.hasOwnProperty(key.trim())) {
+            configObject[key.trim()] = value.trim();
+        }
+    }
+    return configObject;
+}
 function run() {
     try {
         const version = core.getInput('version');
@@ -35,12 +66,14 @@ function run() {
             core.setFailed('Unable to retrieve the branch name');
             return;
         }
-        const fluxServerRef = core.getInput('flux-server-ref') || defaultRef;
-        const fluxHybridRef = core.getInput('flux-hybrid-ref') || defaultRef;
-        const fluxWebRef = core.getInput('flux-web-ref') || defaultRef;
-        const fluxStreamingServerRef = core.getInput('flux-streaming-server-ref') || defaultRef;
-        const fluxDocumentationRef = core.getInput('flux-documentation-ref') || defaultRef;
-        const fluxGatewayRef = core.getInput('flux-gateway-ref') || defaultRef;
+        const overrides = parseOverrides(core.getInput('override'));
+        const fluxServerRef = overrides.flux || defaultRef;
+        const fluxHybridRef = overrides.hybrid || defaultRef;
+        const fluxWebRef = overrides.web || defaultRef;
+        const fluxStreamingServerRef = overrides.streaming || defaultRef;
+        const fluxDocumentationRef = overrides.documentation || defaultRef;
+        const fluxGatewayRef = overrides.gateway || defaultRef;
+        const fluxMapsRef = overrides.maps || defaultRef;
         const buildNativeRef = core.getInput('build-native') || false;
         const releaseRef = core.getInput('release') || false;
         let versionString;
@@ -63,6 +96,7 @@ function run() {
         core.info(`flux-streaming-server-ref: ${fluxStreamingServerRef}`);
         core.info(`flux-documentation-ref: ${fluxDocumentationRef}`);
         core.info(`flux-gateway-ref: ${fluxGatewayRef}`);
+        core.info(`flux-maps-ref: ${fluxMapsRef}`);
         core.info(`build-native: ${buildNativeRef}`);
         core.info(`release: ${releaseRef}`);
         core.setOutput('version-string', versionString);
@@ -73,6 +107,7 @@ function run() {
         core.setOutput('flux-streaming-server-ref', fluxStreamingServerRef);
         core.setOutput('flux-documentation-ref', fluxDocumentationRef);
         core.setOutput('flux-gateway-ref', fluxGatewayRef);
+        core.setOutput('flux-maps-ref', fluxMapsRef);
         core.setOutput('build-native', buildNativeRef);
         core.setOutput('release', releaseRef);
     }
