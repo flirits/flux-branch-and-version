@@ -66,7 +66,7 @@ function run() {
             core.setFailed('Unable to retrieve the branch name');
             return;
         }
-        const overrides = parseOverrides(core.getInput('override'));
+        const overrides = parseOverrides(core.getInput('overrides'));
         const fluxServerRef = overrides.flux || defaultRef;
         const fluxHybridRef = overrides.hybrid || defaultRef;
         const fluxWebRef = overrides.web || defaultRef;
