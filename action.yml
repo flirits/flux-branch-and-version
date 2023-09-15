@@ -31,7 +31,7 @@ outputs:
   flux-gateway-ref:
     description: flux-proxy-ref branch/tag/SHA
   flux-maps-ref:
-    description: flux-proxy-ref branch/tag/SHA
+    description: flux-maps branch/tag/SHA
 runs:
   using: 'node16'
   main: 'dist/index.js'
