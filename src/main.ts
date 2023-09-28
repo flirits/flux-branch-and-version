@@ -37,14 +37,14 @@ function parseOverrides(overrides: string): Record<OverrideKeys, string> {
   return configObject;
 }
 
-function toBoolean(input: string | boolean): boolean {
+function toBoolean(input: string | boolean | undefined): boolean {
   if (typeof input === "string") {
     if (input === 'true' || input === '1') {
       return true;
     }
     return false;
   }
-  return input;
+  return !!input;
 }
 
 function isEnabled(ref: string) {

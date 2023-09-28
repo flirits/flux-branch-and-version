@@ -66,7 +66,7 @@ function toBoolean(input) {
         }
         return false;
     }
-    return input;
+    return !!input;
 }
 function isEnabled(ref) {
     return ref !== SKIP;
