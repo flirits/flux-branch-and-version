@@ -61,8 +61,6 @@ function run(): void {
     }
     const overrides = parseOverrides(core.getInput('overrides'));
 
-    core.info(`build-native: ${core.getInput('release')}`)
-    core.info(`build-native: ${typeof core.getInput('release')}`)
     const buildNativeRef = toBoolean(core.getInput('build-native'))
     const releaseRef = toBoolean(core.getInput('release'))
 
@@ -107,7 +105,7 @@ function run(): void {
       core.info(`${key}:${value}`);
     }
     for (let key in flags) {
-      const value = refs[key];
+      const value = flags[key];
       core.info(`${key}:${value}`);
     }
 
@@ -117,7 +115,7 @@ function run(): void {
       core.setOutput(key, value);
     }
     for (let key in flags) {
-      const value = refs[key];
+      const value = flags[key];
       core.setOutput(key, value);
     }
   } catch (error) {
