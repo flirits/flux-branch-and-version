@@ -55,6 +55,13 @@ function run(): void {
     const buildNativeRef = core.getInput('build-native') || false
     const releaseRef = core.getInput('release') || false
 
+    core.info(`${typeof releaseRef}`)
+    core.info(`${releaseRef}`)
+    if (true) {
+      core.setFailed('Stop for debugging output')
+      return
+    }
+
     let versionString
     if (defaultRef === 'master') {
       versionString = `${version}-b${process.env.GITHUB_RUN_NUMBER}`
