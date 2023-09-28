@@ -61,13 +61,8 @@ function run(): void {
     }
     const overrides = parseOverrides(core.getInput('overrides'));
 
-    const fluxServerRef = overrides.flux || defaultRef
-    const fluxHybridRef = overrides.hybrid || defaultRef
-    const fluxWebRef = overrides.web || defaultRef
-    const fluxStreamingServerRef = overrides.streaming || defaultRef
-    const fluxDocumentationRef = overrides.documentation || defaultRef
-    const fluxGatewayRef = overrides.gateway || defaultRef
-    const fluxMapsRef = overrides.maps || defaultRef
+    core.info(`build-native: ${core.getInput('release')}`)
+    core.info(`build-native: ${typeof core.getInput('release')}`)
     const buildNativeRef = toBoolean(core.getInput('build-native'))
     const releaseRef = toBoolean(core.getInput('release'))
 
