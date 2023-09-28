@@ -39,6 +39,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
  * - maps
  */
 const core = __importStar(__nccwpck_require__(186));
+const SKIP = "SKIPPED";
 function parseOverrides(overrides) {
     const configObject = {
         flux: "",
@@ -58,6 +59,18 @@ function parseOverrides(overrides) {
     }
     return configObject;
 }
+function toBoolean(input) {
+    if (typeof input === "string") {
+        if (input === 'true' || input === '1') {
+            return true;
+        }
+        return false;
+    }
+    return input;
+}
+function isEnabled(ref) {
+    return ref !== SKIP;
+}
 function run() {
     try {
         const version = core.getInput('version');
@@ -74,8 +87,8 @@ function run() {
         const fluxDocumentationRef = overrides.documentation || defaultRef;
         const fluxGatewayRef = overrides.gateway || defaultRef;
         const fluxMapsRef = overrides.maps || defaultRef;
-        const buildNativeRef = core.getInput('build-native') || false;
-        const releaseRef = core.getInput('release') || false;
+        const buildNativeRef = toBoolean(core.getInput('build-native'));
+        const releaseRef = toBoolean(core.getInput('release'));
         let versionString;
         if (defaultRef === 'master') {
             versionString = `${version}-b${process.env.GITHUB_RUN_NUMBER}`;
@@ -88,28 +101,46 @@ function run() {
             }
             versionString = `${version}-${branchString}-b${process.env.GITHUB_RUN_NUMBER}`;
         }
-        core.info(`version-string: ${versionString}`);
-        core.info(`default-ref: ${defaultRef}`);
-        core.info(`flux-server-ref: ${fluxServerRef}`);
-        core.info(`flux-hybrid-ref: ${fluxHybridRef}`);
-        core.info(`flux-web-ref: ${fluxWebRef}`);
-        core.info(`flux-streaming-server-ref: ${fluxStreamingServerRef}`);
-        core.info(`flux-documentation-ref: ${fluxDocumentationRef}`);
-        core.info(`flux-gateway-ref: ${fluxGatewayRef}`);
-        core.info(`flux-maps-ref: ${fluxMapsRef}`);
-        core.info(`build-native: ${buildNativeRef}`);
-        core.info(`release: ${releaseRef}`);
-        core.setOutput('version-string', versionString);
-        core.setOutput('default-ref', defaultRef);
-        core.setOutput('flux-server-ref', fluxServerRef);
-        core.setOutput('flux-hybrid-ref', fluxHybridRef);
-        core.setOutput('flux-web-ref', fluxWebRef);
-        core.setOutput('flux-streaming-server-ref', fluxStreamingServerRef);
-        core.setOutput('flux-documentation-ref', fluxDocumentationRef);
-        core.setOutput('flux-gateway-ref', fluxGatewayRef);
-        core.setOutput('flux-maps-ref', fluxMapsRef);
-        core.setOutput('build-native', buildNativeRef);
-        core.setOutput('release', releaseRef);
+        const refs = {
+            'version-string': versionString,
+            'default-ref': defaultRef,
+            'flux-server-ref': overrides.flux || defaultRef,
+            'flux-hybrid-ref': overrides.hybrid || defaultRef,
+            'flux-web-ref': overrides.web || defaultRef,
+            'flux-streaming-server-ref': overrides.streaming || defaultRef,
+            'flux-documentation-ref': overrides.documentation || defaultRef,
+            'flux-gateway-ref': overrides.gateway || defaultRef,
+            'flux-maps-ref': overrides.maps || defaultRef
+        };
+        const flags = {
+            'build-native': buildNativeRef,
+            'release': releaseRef,
+            'flux-server-enabled': isEnabled(refs['flux-server-ref']),
+            'flux-hybrid-enabled': isEnabled(refs['flux-hybrid-ref']),
+            'flux-web-enabled': isEnabled(refs['flux-web-ref']),
+            'flux-streaming-enabled': isEnabled(refs['flux-streaming-ref']),
+            'flux-documentation-enabled': isEnabled(refs['flux-documentation-ref']),
+            'flux-gateway-enabled': isEnabled(refs['flux-gateway-ref']),
+            'flux-maps-enabled': isEnabled(refs['flux-maps-ref'])
+        };
+        // Logging
+        for (let key in refs) {
+            const value = refs[key];
+            core.info(`${key}:${value}`);
+        }
+        for (let key in flags) {
+            const value = refs[key];
+            core.info(`${key}:${value}`);
+        }
+        // Output
+        for (let key in refs) {
+            const value = refs[key];
+            core.setOutput(key, value);
+        }
+        for (let key in flags) {
+            const value = refs[key];
+            core.setOutput(key, value);
+        }
     }
     catch (error) {
         if (error instanceof Error)
