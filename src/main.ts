@@ -14,7 +14,7 @@ import * as core from '@actions/core'
 
 const SKIP = "SKIPPED";
 
-type OverrideKeys = "flux" | "hybrid" | "web" | "streaming" | "documentation" | "gateway" | "maps"
+type OverrideKeys = "flux" | "hybrid" | "web" | "streaming" | "documentation" | "gateway" | "maps" | "broker"
 function parseOverrides(overrides: string): Record<OverrideKeys, string> {
   const configObject: Record<OverrideKeys, string> = {
     flux: "",
@@ -23,7 +23,8 @@ function parseOverrides(overrides: string): Record<OverrideKeys, string> {
     streaming: "",
     documentation: "",
     gateway: "",
-    maps: ""
+    maps: "",
+    broker: ""
   };
 
   const keyValuePairs = overrides.split(';');
@@ -85,7 +86,8 @@ function run(): void {
       'flux-streaming-server-ref': overrides.streaming || defaultRef,
       'flux-documentation-ref': overrides.documentation || defaultRef,
       'flux-gateway-ref': overrides.gateway || defaultRef,
-      'flux-maps-ref': overrides.maps || defaultRef
+      'flux-maps-ref': overrides.maps || defaultRef,
+      'flux-broker-ref': overrides.broker || defaultRef
     }
     const flags: Record<string, boolean> = {
       'build-native': buildNativeRef,
@@ -96,7 +98,8 @@ function run(): void {
       'flux-streaming-enabled': isEnabled(refs['flux-streaming-ref']),
       'flux-documentation-enabled': isEnabled(refs['flux-documentation-ref']),
       'flux-gateway-enabled': isEnabled(refs['flux-gateway-ref']),
-      'flux-maps-enabled': isEnabled(refs['flux-maps-ref'])
+      'flux-maps-enabled': isEnabled(refs['flux-maps-ref']),
+      'flux-broker-enabled': isEnabled(refs['flux-broker-ref'])
     }
 
     // Logging
