@@ -95,7 +95,7 @@ function run(): void {
       'flux-server-enabled': isEnabled(refs['flux-server-ref']),
       'flux-hybrid-enabled': isEnabled(refs['flux-hybrid-ref']),
       'flux-web-enabled': isEnabled(refs['flux-web-ref']),
-      'flux-streaming-enabled': isEnabled(refs['flux-streaming-ref']),
+      'flux-streaming-enabled': isEnabled(refs['flux-streaming-server-ref']),
       'flux-documentation-enabled': isEnabled(refs['flux-documentation-ref']),
       'flux-gateway-enabled': isEnabled(refs['flux-gateway-ref']),
       'flux-maps-enabled': isEnabled(refs['flux-maps-ref']),
