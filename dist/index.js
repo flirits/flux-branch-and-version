@@ -39,17 +39,17 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
  * - maps
  */
 const core = __importStar(__nccwpck_require__(186));
-const SKIP = "SKIPPED";
+const SKIP = 'SKIPPED';
 function parseOverrides(overrides) {
     const configObject = {
-        flux: "",
-        hybrid: "",
-        web: "",
-        streaming: "",
-        documentation: "",
-        gateway: "",
-        maps: "",
-        broker: ""
+        flux: '',
+        hybrid: '',
+        web: '',
+        streaming: '',
+        documentation: '',
+        gateway: '',
+        maps: '',
+        broker: ''
     };
     const keyValuePairs = overrides.split(';');
     for (const pair of keyValuePairs) {
@@ -61,7 +61,7 @@ function parseOverrides(overrides) {
     return configObject;
 }
 function toBoolean(input) {
-    if (typeof input === "string") {
+    if (typeof input === 'string') {
         if (input === 'true' || input === '1') {
             return true;
         }
@@ -109,7 +109,7 @@ function run() {
         };
         const flags = {
             'build-native': buildNativeRef,
-            'release': releaseRef,
+            release: releaseRef,
             'flux-server-enabled': isEnabled(refs['flux-server-ref']),
             'flux-hybrid-enabled': isEnabled(refs['flux-hybrid-ref']),
             'flux-web-enabled': isEnabled(refs['flux-web-ref']),
@@ -120,20 +120,20 @@ function run() {
             'flux-broker-enabled': isEnabled(refs['flux-broker-ref'])
         };
         // Logging
-        for (let key in refs) {
+        for (const key in refs) {
             const value = refs[key];
             core.info(`${key}:${value}`);
         }
-        for (let key in flags) {
+        for (const key in flags) {
             const value = flags[key];
             core.info(`${key}:${value}`);
         }
         // Output
-        for (let key in refs) {
+        for (const key in refs) {
             const value = refs[key];
             core.setOutput(key, value);
         }
-        for (let key in flags) {
+        for (const key in flags) {
             const value = flags[key];
             core.setOutput(key, value);
         }
