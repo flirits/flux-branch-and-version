@@ -33,5 +33,5 @@ outputs:
   flux-maps-ref:
     description: flux-maps branch/tag/SHA
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'

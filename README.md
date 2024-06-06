@@ -23,10 +23,33 @@ steps:
 
 Install the dependencies  
 ```bash
-$ npm install
+npm install
 ```
 
 Build the typescript and package it for distribution
 ```bash
-$ npm run build && npm run package
+npm run build && npm run package
 ```
+
+### Note on mac OS
+
+When you get the following error:
+ ```javascript
+ {
+  opensslErrorStack: [
+    'error:03000086:digital envelope routines::initialization error',
+    'error:0308010C:digital envelope routines::unsupported'
+  ],
+  library: 'digital envelope routines',
+  reason: 'unsupported',
+  code: 'ERR_OSSL_EVP_UNSUPPORTED'
+}
+ ```
+
+it might be necessary to do the following before 'npm run package'
+
+```bash
+export NODE_OPTIONS=--openssl-legacy-provider
+```
+
+

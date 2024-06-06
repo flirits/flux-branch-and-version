@@ -12,55 +12,55 @@
  */
 import * as core from '@actions/core'
 
-const SKIP = "SKIPPED";
+const SKIP = 'SKIPPED'
 
-type OverrideKeys = "flux" | "hybrid" | "web" | "streaming" | "documentation" | "gateway" | "maps" | "broker"
+type OverrideKeys = 'flux' | 'hybrid' | 'web' | 'streaming' | 'documentation' | 'gateway' | 'maps' | 'broker'
 function parseOverrides(overrides: string): Record<OverrideKeys, string> {
   const configObject: Record<OverrideKeys, string> = {
-    flux: "",
-    hybrid: "",
-    web: "",
-    streaming: "",
-    documentation: "",
-    gateway: "",
-    maps: "",
-    broker: ""
-  };
+    flux: '',
+    hybrid: '',
+    web: '',
+    streaming: '',
+    documentation: '',
+    gateway: '',
+    maps: '',
+    broker: ''
+  }
 
-  const keyValuePairs = overrides.split(';');
+  const keyValuePairs = overrides.split(';')
 
   for (const pair of keyValuePairs) {
-    const [key, value] = pair.split('=');
+    const [key, value] = pair.split('=')
     if (key && value && configObject.hasOwnProperty(key.trim())) {
-      configObject[key.trim() as OverrideKeys] = value.trim();
+      configObject[key.trim() as OverrideKeys] = value.trim()
     }
   }
-  return configObject;
+  return configObject
 }
 
 function toBoolean(input: string | boolean | undefined): boolean {
-  if (typeof input === "string") {
+  if (typeof input === 'string') {
     if (input === 'true' || input === '1') {
-      return true;
+      return true
     }
-    return false;
+    return false
   }
-  return !!input;
+  return !!input
 }
 
-function isEnabled(ref: string) {
-  return ref !== SKIP;
+function isEnabled(ref: string): boolean {
+  return ref !== SKIP
 }
 
 function run(): void {
   try {
     const version = core.getInput('version')
-    const defaultRef = core.getInput('default-ref') || process.env.GITHUB_REF_NAME as string;
+    const defaultRef = core.getInput('default-ref') || (process.env.GITHUB_REF_NAME as string)
     if (!defaultRef) {
       core.setFailed('Unable to retrieve the branch name')
       return
     }
-    const overrides = parseOverrides(core.getInput('overrides'));
+    const overrides = parseOverrides(core.getInput('overrides'))
 
     const buildNativeRef = toBoolean(core.getInput('build-native'))
     const releaseRef = toBoolean(core.getInput('release'))
@@ -91,7 +91,7 @@ function run(): void {
     }
     const flags: Record<string, boolean> = {
       'build-native': buildNativeRef,
-      'release': releaseRef,
+      release: releaseRef,
       'flux-server-enabled': isEnabled(refs['flux-server-ref']),
       'flux-hybrid-enabled': isEnabled(refs['flux-hybrid-ref']),
       'flux-web-enabled': isEnabled(refs['flux-web-ref']),
@@ -103,23 +103,23 @@ function run(): void {
     }
 
     // Logging
-    for (let key in refs) {
-      const value = refs[key];
-      core.info(`${key}:${value}`);
+    for (const key in refs) {
+      const value = refs[key]
+      core.info(`${key}:${value}`)
     }
-    for (let key in flags) {
-      const value = flags[key];
-      core.info(`${key}:${value}`);
+    for (const key in flags) {
+      const value = flags[key]
+      core.info(`${key}:${value}`)
     }
 
     // Output
-    for (let key in refs) {
-      const value = refs[key];
-      core.setOutput(key, value);
+    for (const key in refs) {
+      const value = refs[key]
+      core.setOutput(key, value)
     }
-    for (let key in flags) {
-      const value = flags[key];
-      core.setOutput(key, value);
+    for (const key in flags) {
+      const value = flags[key]
+      core.setOutput(key, value)
     }
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
