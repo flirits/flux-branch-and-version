@@ -34,7 +34,7 @@ npm run build && npm run package
 ### Note on mac OS
 
 When you get the following error:
- ```json 
+ ```javascript
  {
   opensslErrorStack: [
     'error:03000086:digital envelope routines::initialization error',
