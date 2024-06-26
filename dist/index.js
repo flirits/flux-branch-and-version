@@ -53,7 +53,9 @@ function parseOverrides(overrides) {
         documentation: '',
         gateway: '',
         maps: '',
-        broker: ''
+        broker: '',
+        est: '',
+        certificates: ''
     };
     const keyValuePairs = overrides.split(';');
     for (const pair of keyValuePairs) {
@@ -109,7 +111,9 @@ function run() {
             'flux-documentation-ref': overrides.documentation || defaultRef,
             'flux-gateway-ref': overrides.gateway || defaultRef,
             'flux-maps-ref': overrides.maps || defaultRef,
-            'flux-broker-ref': overrides.broker || defaultRef
+            'flux-broker-ref': overrides.broker || defaultRef,
+            'flux-est-ref': overrides.est || defaultRef,
+            'flux-certificates-ref': overrides.certificates || defaultRef
         };
         const flags = {
             'build-native': buildNativeRef,
@@ -121,7 +125,9 @@ function run() {
             'flux-documentation-enabled': isEnabled(refs['flux-documentation-ref']),
             'flux-gateway-enabled': isEnabled(refs['flux-gateway-ref']),
             'flux-maps-enabled': isEnabled(refs['flux-maps-ref']),
-            'flux-broker-enabled': isEnabled(refs['flux-broker-ref'])
+            'flux-broker-enabled': isEnabled(refs['flux-broker-ref']),
+            'flux-est-enabled': isEnabled(refs['flux-est-ref']),
+            'flux-certificates-enabled': isEnabled(refs['flux-certificates-ref'])
         };
         // Logging
         for (const key in refs) {
