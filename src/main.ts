@@ -9,6 +9,10 @@
  * - documentation
  * - gateway
  * - maps
+ * - broker
+ * - est
+ * - certificates
+ * - data
  */
 import * as core from '@actions/core'
 
@@ -25,6 +29,7 @@ type OverrideKeys =
   | 'broker'
   | 'est'
   | 'certificates'
+  | 'data'
 
 function parseOverrides(overrides: string): Record<OverrideKeys, string> {
   const configObject: Record<OverrideKeys, string> = {
@@ -37,7 +42,8 @@ function parseOverrides(overrides: string): Record<OverrideKeys, string> {
     maps: '',
     broker: '',
     est: '',
-    certificates: ''
+    certificates: '',
+    data: ''
   }
 
   const keyValuePairs = overrides.split(';')
@@ -102,7 +108,8 @@ function run(): void {
       'flux-maps-ref': overrides.maps || defaultRef,
       'flux-broker-ref': overrides.broker || defaultRef,
       'flux-est-ref': overrides.est || defaultRef,
-      'flux-certificates-ref': overrides.certificates || defaultRef
+      'flux-certificates-ref': overrides.certificates || defaultRef,
+      'flux-data-ref': overrides.certificates || defaultRef
     }
     const flags: Record<string, boolean> = {
       'build-native': buildNativeRef,
@@ -116,7 +123,8 @@ function run(): void {
       'flux-maps-enabled': isEnabled(refs['flux-maps-ref']),
       'flux-broker-enabled': isEnabled(refs['flux-broker-ref']),
       'flux-est-enabled': isEnabled(refs['flux-est-ref']),
-      'flux-certificates-enabled': isEnabled(refs['flux-certificates-ref'])
+      'flux-certificates-enabled': isEnabled(refs['flux-certificates-ref']),
+      'flux-data-enabled': isEnabled(refs['flux-data-ref'])
     }
 
     // Logging
