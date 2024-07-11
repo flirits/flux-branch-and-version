@@ -41,6 +41,10 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
  * - documentation
  * - gateway
  * - maps
+ * - broker
+ * - est
+ * - certificates
+ * - data
  */
 const core = __importStar(__nccwpck_require__(2186));
 const SKIP = 'SKIPPED';
@@ -55,7 +59,8 @@ function parseOverrides(overrides) {
         maps: '',
         broker: '',
         est: '',
-        certificates: ''
+        certificates: '',
+        data: ''
     };
     const keyValuePairs = overrides.split(';');
     for (const pair of keyValuePairs) {
@@ -113,7 +118,8 @@ function run() {
             'flux-maps-ref': overrides.maps || defaultRef,
             'flux-broker-ref': overrides.broker || defaultRef,
             'flux-est-ref': overrides.est || defaultRef,
-            'flux-certificates-ref': overrides.certificates || defaultRef
+            'flux-certificates-ref': overrides.certificates || defaultRef,
+            'flux-data-ref': overrides.certificates || defaultRef
         };
         const flags = {
             'build-native': buildNativeRef,
@@ -127,7 +133,8 @@ function run() {
             'flux-maps-enabled': isEnabled(refs['flux-maps-ref']),
             'flux-broker-enabled': isEnabled(refs['flux-broker-ref']),
             'flux-est-enabled': isEnabled(refs['flux-est-ref']),
-            'flux-certificates-enabled': isEnabled(refs['flux-certificates-ref'])
+            'flux-certificates-enabled': isEnabled(refs['flux-certificates-ref']),
+            'flux-data-enabled': isEnabled(refs['flux-data-ref'])
         };
         // Logging
         for (const key in refs) {
