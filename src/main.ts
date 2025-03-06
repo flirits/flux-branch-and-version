@@ -85,7 +85,7 @@ function run(): void {
     const releaseRef = toBoolean(core.getInput('release'))
 
     let versionString
-    if (defaultRef === 'master') {
+    if (defaultRef === 'master' || releaseRef) {
       versionString = `${version}-b${process.env.GITHUB_RUN_NUMBER}`
     } else {
       const branchStringInLowerCase = defaultRef.toLowerCase()
