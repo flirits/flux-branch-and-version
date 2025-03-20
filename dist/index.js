@@ -45,6 +45,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
  * - est
  * - certificates
  * - data
+ * - plugins
  */
 const core = __importStar(__nccwpck_require__(2186));
 const SKIP = 'SKIPPED';
@@ -60,7 +61,8 @@ function parseOverrides(overrides) {
         broker: '',
         est: '',
         certificates: '',
-        data: ''
+        data: '',
+        plugins: ''
     };
     const keyValuePairs = overrides.split(';');
     for (const pair of keyValuePairs) {
@@ -119,7 +121,8 @@ function run() {
             'flux-broker-ref': overrides.broker || defaultRef,
             'flux-est-ref': overrides.est || defaultRef,
             'flux-certificates-ref': overrides.certificates || defaultRef,
-            'flux-data-ref': overrides.certificates || defaultRef
+            'flux-data-ref': overrides.certificates || defaultRef,
+            'flux-plugins-ref': overrides.plugins || defaultRef
         };
         const flags = {
             'build-native': buildNativeRef,
@@ -134,7 +137,8 @@ function run() {
             'flux-broker-enabled': isEnabled(refs['flux-broker-ref']),
             'flux-est-enabled': isEnabled(refs['flux-est-ref']),
             'flux-certificates-enabled': isEnabled(refs['flux-certificates-ref']),
-            'flux-data-enabled': isEnabled(refs['flux-data-ref'])
+            'flux-data-enabled': isEnabled(refs['flux-data-ref']),
+            'flux-plugins-enabled': isEnabled(refs['flux-plugins-ref'])
         };
         // Logging
         for (const key in refs) {
