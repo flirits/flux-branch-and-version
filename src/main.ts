@@ -1,8 +1,8 @@
 /**
  * Parses the override string
- * Example of an override string: flux=hashOrTask;hybrid=task/something/some;streaming=...
+ * Example of an override string: server=hashOrTask;hybrid=task/something/some;streaming=...
  * Available overrides are
- * - flux
+ * - server
  * - hybrid
  * - web
  * - streaming
@@ -20,10 +20,10 @@ import * as core from '@actions/core'
 const SKIP = 'SKIPPED'
 
 type OverrideKeys =
-  | 'flux'
+  | 'server'
   | 'hybrid'
   | 'web'
-  | 'streaming'
+  | 'streaming-server'
   | 'documentation'
   | 'gateway'
   | 'maps'
@@ -35,10 +35,10 @@ type OverrideKeys =
 
 function parseOverrides(overrides: string): Record<OverrideKeys, string> {
   const configObject: Record<OverrideKeys, string> = {
-    flux: '',
+    server: '',
     hybrid: '',
     web: '',
-    streaming: '',
+    'streaming-server': '',
     documentation: '',
     gateway: '',
     maps: '',
@@ -104,7 +104,7 @@ function run(): void {
       'default-ref': defaultRef
     }
     for (const [key, value] of Object.entries(overrides)) {
-      refs[`flux-${key}-ref`] = value ?? defaultRef
+      refs[`flux-${key}-ref`] = value || defaultRef
     }
 
     const flags: Record<string, boolean> = {
