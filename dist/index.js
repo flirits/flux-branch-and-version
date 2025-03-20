@@ -45,6 +45,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
  * - est
  * - certificates
  * - data
+ * - plugins
  */
 const core = __importStar(__nccwpck_require__(2186));
 const SKIP = 'SKIPPED';
@@ -60,7 +61,8 @@ function parseOverrides(overrides) {
         broker: '',
         est: '',
         certificates: '',
-        data: ''
+        data: '',
+        plugins: ''
     };
     const keyValuePairs = overrides.split(';');
     for (const pair of keyValuePairs) {
@@ -108,34 +110,18 @@ function run() {
         }
         const refs = {
             'version-string': versionString,
-            'default-ref': defaultRef,
-            'flux-server-ref': overrides.flux || defaultRef,
-            'flux-hybrid-ref': overrides.hybrid || defaultRef,
-            'flux-web-ref': overrides.web || defaultRef,
-            'flux-streaming-server-ref': overrides.streaming || defaultRef,
-            'flux-documentation-ref': overrides.documentation || defaultRef,
-            'flux-gateway-ref': overrides.gateway || defaultRef,
-            'flux-maps-ref': overrides.maps || defaultRef,
-            'flux-broker-ref': overrides.broker || defaultRef,
-            'flux-est-ref': overrides.est || defaultRef,
-            'flux-certificates-ref': overrides.certificates || defaultRef,
-            'flux-data-ref': overrides.certificates || defaultRef
+            'default-ref': defaultRef
         };
+        for (const [key, value] of Object.entries(overrides)) {
+            refs[`flux-${key}-ref`] = value !== null && value !== void 0 ? value : defaultRef;
+        }
         const flags = {
             'build-native': buildNativeRef,
-            release: releaseRef,
-            'flux-server-enabled': isEnabled(refs['flux-server-ref']),
-            'flux-hybrid-enabled': isEnabled(refs['flux-hybrid-ref']),
-            'flux-web-enabled': isEnabled(refs['flux-web-ref']),
-            'flux-streaming-enabled': isEnabled(refs['flux-streaming-server-ref']),
-            'flux-documentation-enabled': isEnabled(refs['flux-documentation-ref']),
-            'flux-gateway-enabled': isEnabled(refs['flux-gateway-ref']),
-            'flux-maps-enabled': isEnabled(refs['flux-maps-ref']),
-            'flux-broker-enabled': isEnabled(refs['flux-broker-ref']),
-            'flux-est-enabled': isEnabled(refs['flux-est-ref']),
-            'flux-certificates-enabled': isEnabled(refs['flux-certificates-ref']),
-            'flux-data-enabled': isEnabled(refs['flux-data-ref'])
+            release: releaseRef
         };
+        for (const [key, value] of Object.entries(overrides)) {
+            flags[`flux-${key}-enabled`] = isEnabled(value);
+        }
         // Logging
         for (const key in refs) {
             const value = refs[key];
