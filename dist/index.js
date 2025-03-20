@@ -45,7 +45,7 @@ function run() {
         const buildNativeRef = core.getInput('build-native') || false;
         const releaseRef = core.getInput('release') || false;
         let versionString;
-        if (defaultRef === 'master') {
+        if (defaultRef === 'master' || releaseRef === 'true') {
             versionString = `${version}-b${process.env.GITHUB_RUN_NUMBER}`;
         }
         else {
