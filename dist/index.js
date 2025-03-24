@@ -32,9 +32,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 /**
  * Parses the override string
- * Example of an override string: flux=hashOrTask;hybrid=task/something/some;streaming=...
+ * Example of an override string: server=hashOrTask;hybrid=task/something/some;streaming=...
  * Available overrides are
- * - flux
+ * - server
  * - hybrid
  * - web
  * - streaming
@@ -51,10 +51,10 @@ const core = __importStar(__nccwpck_require__(2186));
 const SKIP = 'SKIPPED';
 function parseOverrides(overrides) {
     const configObject = {
-        flux: '',
+        server: '',
         hybrid: '',
         web: '',
-        streaming: '',
+        'streaming-server': '',
         documentation: '',
         gateway: '',
         maps: '',
@@ -113,7 +113,7 @@ function run() {
             'default-ref': defaultRef
         };
         for (const [key, value] of Object.entries(overrides)) {
-            refs[`flux-${key}-ref`] = value !== null && value !== void 0 ? value : defaultRef;
+            refs[`flux-${key}-ref`] = value || defaultRef;
         }
         const flags = {
             'build-native': buildNativeRef,
