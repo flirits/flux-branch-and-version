@@ -32,6 +32,8 @@ outputs:
     description: flux-gateway branch/tag/SHA
   flux-maps-ref:
     description: flux-maps branch/tag/SHA
+  flux-c2c-ref:
+    description: flux-c2c branch/tag/SHA
 runs:
   using: 'node20'
   main: 'dist/index.js'

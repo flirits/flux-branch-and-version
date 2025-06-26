@@ -14,6 +14,7 @@
  * - certificates
  * - data
  * - plugins
+ * - c2c
  */
 import * as core from '@actions/core'
 
@@ -32,6 +33,7 @@ type OverrideKeys =
   | 'certificates'
   | 'data'
   | 'plugins'
+  | 'c2c'
 
 function parseOverrides(overrides: string): Record<OverrideKeys, string> {
   const configObject: Record<OverrideKeys, string> = {
@@ -46,7 +48,8 @@ function parseOverrides(overrides: string): Record<OverrideKeys, string> {
     est: '',
     certificates: '',
     data: '',
-    plugins: ''
+    plugins: '',
+    c2c: ''
   }
 
   const keyValuePairs = overrides.split(';')
