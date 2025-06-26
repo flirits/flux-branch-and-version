@@ -46,6 +46,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
  * - certificates
  * - data
  * - plugins
+ * - c2c
  */
 const core = __importStar(__nccwpck_require__(2186));
 const SKIP = 'SKIPPED';
@@ -62,7 +63,8 @@ function parseOverrides(overrides) {
         est: '',
         certificates: '',
         data: '',
-        plugins: ''
+        plugins: '',
+        c2c: ''
     };
     const keyValuePairs = overrides.split(';');
     for (const pair of keyValuePairs) {
