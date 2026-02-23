@@ -35,6 +35,28 @@ type OverrideKeys =
   | 'plugins'
   | 'c2c'
 
+interface Parameters {
+  version: string
+  defaultRef: string
+  overrides: Record<OverrideKeys, string>
+  isBuildNative: boolean
+  isRelease: boolean
+}
+
+function parseParameters(): Parameters {
+  const defaultRef = core.getInput('default-ref') || (process.env.GITHUB_REF_NAME as string)
+  if (!defaultRef) {
+    throw new Error('Unable to retrieve the branch name')
+  }
+  return {
+    version: core.getInput('version'),
+    defaultRef,
+    overrides: parseOverrides(core.getInput('overrides')),
+    isBuildNative: toBoolean(core.getInput('build-native')),
+    isRelease: toBoolean(core.getInput('release'))
+  }
+}
+
 function parseOverrides(overrides: string): Record<OverrideKeys, string> {
   const configObject: Record<OverrideKeys, string> = {
     server: '',
@@ -79,28 +101,9 @@ function isEnabled(ref: string): boolean {
 
 function run(): void {
   try {
-    const version = core.getInput('version')
-    const defaultRef = core.getInput('default-ref') || (process.env.GITHUB_REF_NAME as string)
-    if (!defaultRef) {
-      core.setFailed('Unable to retrieve the branch name')
-      return
-    }
-    const overrides = parseOverrides(core.getInput('overrides'))
-
-    const buildNativeRef = toBoolean(core.getInput('build-native'))
-    const releaseRef = toBoolean(core.getInput('release'))
-
-    let versionString
-    if (defaultRef === 'master' || releaseRef) {
-      versionString = `${version}-b${process.env.GITHUB_RUN_NUMBER}`
-    } else {
-      const branchStringInLowerCase = defaultRef.toLowerCase()
-      let branchString = branchStringInLowerCase
-      if (branchStringInLowerCase.includes('/')) {
-        branchString = branchStringInLowerCase.substring(branchStringInLowerCase.indexOf('/') + 1).replace('/', '-')
-      }
-      versionString = `${version}-${branchString}-b${process.env.GITHUB_RUN_NUMBER}`
-    }
+    const parameters = parseParameters()
+    const versionString = determineVersion(parameters)
+    const {defaultRef, overrides, isBuildNative, isRelease} = parameters
 
     const refs: Record<string, string> = {
       'version-string': versionString,
@@ -111,34 +114,38 @@ function run(): void {
     }
 
     const flags: Record<string, boolean> = {
-      'build-native': buildNativeRef,
-      release: releaseRef
+      'build-native': isBuildNative,
+      release: isRelease
     }
     for (const [key, value] of Object.entries(overrides)) {
       flags[`flux-${key}-enabled`] = isEnabled(value)
     }
 
-    // Logging
-    for (const key in refs) {
-      const value = refs[key]
-      core.info(`${key}:${value}`)
-    }
-    for (const key in flags) {
-      const value = flags[key]
-      core.info(`${key}:${value}`)
-    }
-
-    // Output
-    for (const key in refs) {
-      const value = refs[key]
-      core.setOutput(key, value)
-    }
-    for (const key in flags) {
-      const value = flags[key]
-      core.setOutput(key, value)
-    }
+    setOutputs(refs)
+    setOutputs(flags)
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
+  }
+}
+
+function determineVersion({defaultRef, isRelease, version}: Parameters): string {
+  return defaultRef === 'master' || isRelease
+    ? `${version}-b${process.env.GITHUB_RUN_NUMBER}`
+    : `${version}-${branchId(defaultRef)}-b${process.env.GITHUB_RUN_NUMBER}`
+}
+
+function branchId(defaultRef: string): string {
+  const ref = defaultRef.toLowerCase()
+  return ref.includes('/')
+    ? ref.substring(ref.indexOf('/') + 1).replace('/', '-')
+    : ref
+}
+
+function setOutputs(values: Record<string, unknown>): void {
+  for (const key in values) {
+    const value = values[key]
+    core.info(`${key}:${value}`)
+    core.setOutput(key, value)
   }
 }
 
