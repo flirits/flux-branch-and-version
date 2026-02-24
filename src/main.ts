@@ -38,6 +38,7 @@ type OverrideKeys =
 interface Parameters {
   version: string
   defaultRef: string
+  mutableRefs: string[]
   overrides: Record<OverrideKeys, string>
   isBuildNative: boolean
   isRelease: boolean
@@ -51,6 +52,7 @@ function parseParameters(): Parameters {
   return {
     version: core.getInput('version'),
     defaultRef,
+    mutableRefs: (core.getInput('mutable-refs') || undefined)?.split(',') ?? [],
     overrides: parseOverrides(core.getInput('overrides')),
     isBuildNative: toBoolean(core.getInput('build-native')),
     isRelease: toBoolean(core.getInput('release'))
@@ -87,10 +89,7 @@ function parseOverrides(overrides: string): Record<OverrideKeys, string> {
 
 function toBoolean(input: string | boolean | undefined): boolean {
   if (typeof input === 'string') {
-    if (input === 'true' || input === '1') {
-      return true
-    }
-    return false
+    return input === 'true' || input === '1'
   }
   return !!input
 }
@@ -102,12 +101,13 @@ function isEnabled(ref: string): boolean {
 function run(): void {
   try {
     const parameters = parseParameters()
-    const versionString = determineVersion(parameters)
     const {defaultRef, overrides, isBuildNative, isRelease} = parameters
 
-    const refs: Record<string, string> = {
-      'version-string': versionString,
-      'default-ref': defaultRef
+    const refs: Record<string, unknown> = {
+      'version-string': determineVersion(parameters),
+      'default-ref': defaultRef,
+      'mutable-version': determineMutableVersion(parameters),
+      'consistent-refs': !hasOverrides(parameters)
     }
     for (const [key, value] of Object.entries(overrides)) {
       refs[`flux-${key}-ref`] = value || defaultRef
@@ -136,9 +136,16 @@ function determineVersion({defaultRef, isRelease, version}: Parameters): string 
 
 function branchId(defaultRef: string): string {
   const ref = defaultRef.toLowerCase()
-  return ref.includes('/')
-    ? ref.substring(ref.indexOf('/') + 1).replace('/', '-')
-    : ref
+  return ref.includes('/') ? ref.substring(ref.indexOf('/') + 1).replace('/', '-') : ref
+}
+
+function determineMutableVersion(parameters: Parameters): string {
+  const {defaultRef, mutableRefs} = parameters
+  return !hasOverrides(parameters) && mutableRefs.includes(defaultRef) ? defaultRef : ''
+}
+
+function hasOverrides({defaultRef, overrides}: Parameters): boolean {
+  return Object.values(overrides).some(value => value !== '' && value !== defaultRef)
 }
 
 function setOutputs(values: Record<string, unknown>): void {
