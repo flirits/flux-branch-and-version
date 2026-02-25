@@ -50,6 +50,21 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
  */
 const core = __importStar(__nccwpck_require__(2186));
 const SKIP = 'SKIPPED';
+function parseParameters() {
+    var _a, _b;
+    const defaultRef = core.getInput('default-ref') || process.env.GITHUB_REF_NAME;
+    if (!defaultRef) {
+        throw new Error('Unable to retrieve the branch name');
+    }
+    return {
+        version: core.getInput('version'),
+        defaultRef,
+        mutableRefs: (_b = (_a = (core.getInput('mutable-refs') || undefined)) === null || _a === void 0 ? void 0 : _a.split(',')) !== null && _b !== void 0 ? _b : [],
+        overrides: parseOverrides(core.getInput('overrides')),
+        isBuildNative: toBoolean(core.getInput('build-native')),
+        isRelease: toBoolean(core.getInput('release'))
+    };
+}
 function parseOverrides(overrides) {
     const configObject = {
         server: '',
@@ -77,10 +92,7 @@ function parseOverrides(overrides) {
 }
 function toBoolean(input) {
     if (typeof input === 'string') {
-        if (input === 'true' || input === '1') {
-            return true;
-        }
-        return false;
+        return input === 'true' || input === '1';
     }
     return !!input;
 }
@@ -89,63 +101,53 @@ function isEnabled(ref) {
 }
 function run() {
     try {
-        const version = core.getInput('version');
-        const defaultRef = core.getInput('default-ref') || process.env.GITHUB_REF_NAME;
-        if (!defaultRef) {
-            core.setFailed('Unable to retrieve the branch name');
-            return;
-        }
-        const overrides = parseOverrides(core.getInput('overrides'));
-        const buildNativeRef = toBoolean(core.getInput('build-native'));
-        const releaseRef = toBoolean(core.getInput('release'));
-        let versionString;
-        if (defaultRef === 'master' || releaseRef) {
-            versionString = `${version}-b${process.env.GITHUB_RUN_NUMBER}`;
-        }
-        else {
-            const branchStringInLowerCase = defaultRef.toLowerCase();
-            let branchString = branchStringInLowerCase;
-            if (branchStringInLowerCase.includes('/')) {
-                branchString = branchStringInLowerCase.substring(branchStringInLowerCase.indexOf('/') + 1).replace('/', '-');
-            }
-            versionString = `${version}-${branchString}-b${process.env.GITHUB_RUN_NUMBER}`;
-        }
+        const parameters = parseParameters();
+        const { defaultRef, overrides, isBuildNative, isRelease } = parameters;
         const refs = {
-            'version-string': versionString,
-            'default-ref': defaultRef
+            'version-string': determineVersion(parameters),
+            'default-ref': defaultRef,
+            'mutable-version': determineMutableVersion(parameters),
+            'consistent-refs': !hasOverrides(parameters)
         };
         for (const [key, value] of Object.entries(overrides)) {
             refs[`flux-${key}-ref`] = value || defaultRef;
         }
         const flags = {
-            'build-native': buildNativeRef,
-            release: releaseRef
+            'build-native': isBuildNative,
+            release: isRelease
         };
         for (const [key, value] of Object.entries(overrides)) {
             flags[`flux-${key}-enabled`] = isEnabled(value);
         }
-        // Logging
-        for (const key in refs) {
-            const value = refs[key];
-            core.info(`${key}:${value}`);
-        }
-        for (const key in flags) {
-            const value = flags[key];
-            core.info(`${key}:${value}`);
-        }
-        // Output
-        for (const key in refs) {
-            const value = refs[key];
-            core.setOutput(key, value);
-        }
-        for (const key in flags) {
-            const value = flags[key];
-            core.setOutput(key, value);
-        }
+        setOutputs(refs);
+        setOutputs(flags);
     }
     catch (error) {
         if (error instanceof Error)
             core.setFailed(error.message);
+    }
+}
+function determineVersion({ defaultRef, isRelease, version }) {
+    return defaultRef === 'master' || isRelease
+        ? `${version}-b${process.env.GITHUB_RUN_NUMBER}`
+        : `${version}-${branchId(defaultRef)}-b${process.env.GITHUB_RUN_NUMBER}`;
+}
+function branchId(defaultRef) {
+    const ref = defaultRef.toLowerCase();
+    return ref.includes('/') ? ref.substring(ref.indexOf('/') + 1).replace('/', '-') : ref;
+}
+function determineMutableVersion(parameters) {
+    const { defaultRef, mutableRefs } = parameters;
+    return !hasOverrides(parameters) && mutableRefs.includes(defaultRef) ? defaultRef : '';
+}
+function hasOverrides({ defaultRef, overrides }) {
+    return Object.values(overrides).some(value => value !== '' && value !== defaultRef);
+}
+function setOutputs(values) {
+    for (const key in values) {
+        const value = values[key];
+        core.info(`${key}:${value}`);
+        core.setOutput(key, value);
     }
 }
 run();
