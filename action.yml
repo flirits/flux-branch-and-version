@@ -15,11 +15,18 @@ inputs:
     description: build native installers
   release:
     description: official release
+  mutable-refs:
+    default: 'staging'
+    description: refs (comma-separated) considered for a mutable tag
 outputs:
   version-string:
     description: version string
   default-ref:
     description: default branch/tag
+  mutable-version:
+    description: mutable version, or an empty string if not applicable
+  consistent-refs:
+    description: whether all components are being built at the same ref (the default ref)
   flux-server-ref:
     description: flux-server branch/tag/SHA
   flux-hybrid-ref:
