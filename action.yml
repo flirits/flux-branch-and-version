@@ -16,7 +16,7 @@ inputs:
   release:
     description: official release
   mutable-refs:
-    default: 'staging'
+    default: 'staging,master'
     description: refs (comma-separated) considered for a mutable tag
 outputs:
   version-string:
