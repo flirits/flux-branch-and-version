@@ -45,6 +45,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
  * - est
  * - certificates
  * - data
+ * - data-migrator
  * - plugins
  * - c2c
  */
@@ -78,6 +79,7 @@ function parseOverrides(overrides) {
         est: '',
         certificates: '',
         data: '',
+        'data-migrator': '',
         plugins: '',
         c2c: ''
     };
