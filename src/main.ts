@@ -13,6 +13,7 @@
  * - est
  * - certificates
  * - data
+ * - data-migrator
  * - plugins
  * - c2c
  */
