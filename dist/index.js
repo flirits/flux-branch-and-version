@@ -45,6 +45,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
  * - est
  * - certificates
  * - data
+ * - data-migrator
  * - plugins
  * - c2c
  */
