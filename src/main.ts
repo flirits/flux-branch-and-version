@@ -32,6 +32,7 @@ type OverrideKeys =
   | 'est'
   | 'certificates'
   | 'data'
+  | 'data-migrator'
   | 'plugins'
   | 'c2c'
 
@@ -72,6 +73,7 @@ function parseOverrides(overrides: string): Record<OverrideKeys, string> {
     est: '',
     certificates: '',
     data: '',
+    'data-migrator': '',
     plugins: '',
     c2c: ''
   }
